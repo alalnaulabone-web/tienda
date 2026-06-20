@@ -1,10 +1,13 @@
 package com.tienda.alal.validation;
 
-import com.tienda.alal.exception.FileUploadException;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.regex.Pattern;
+
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.*;
-import java.util.regex.Pattern;
+import com.tienda.alal.exception.FileUploadException;
 
 public class FileValidation {
 

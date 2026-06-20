@@ -22,23 +22,8 @@ public class GenericController {
     }
 
     @PostMapping
-    public ResponseEntity<?> ejecutar(@RequestBody GenericRequest req) {
-        try {
-            Map<String, Object> result = service.ejecutarSP(req.getSp_id(), req.getParams());
-            return ResponseEntity.ok(Map.of(
-                    "status", 200,
-                    "data", result
-            ));
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(Map.of(
-                    "status", 400,
-                    "error", e.getMessage()
-            ));
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().body(Map.of(
-                    "status", 500,
-                    "error", "Error interno"
-            ));
-        }
+    public ResponseEntity<Map<String, Object>> ejecutar(@RequestBody GenericRequest req) {
+        Map<String, Object> result = service.ejecutarSP(req.getSp_id(), req.getParams());
+        return ResponseEntity.ok(Map.of("status", 200, "data", result));
     }
 }

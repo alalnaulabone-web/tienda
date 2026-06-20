@@ -23,25 +23,7 @@ public class TiendaController {
 
     @PostMapping
     public ResponseEntity<ApiResponse> insertar(@RequestBody Map<String, Object> req) {
-
-        try {
-            String resultado = service.insertarTienda(req);
-
-            // 🔎 Detectar errores del SP
-            if (resultado.startsWith("Error")) {
-                return ResponseEntity
-                        .badRequest()
-                        .body(new ApiResponse(400, resultado));
-            }
-
-            return ResponseEntity
-                    .ok(new ApiResponse(200, resultado));
-
-        } catch (Exception e) {
-
-            return ResponseEntity
-                    .internalServerError()
-                    .body(new ApiResponse(500, "Error interno del servidor"));
-        }
+        String resultado = service.insertarTienda(req);
+        return ResponseEntity.ok(new ApiResponse(200, resultado));
     }
 }
