@@ -2,6 +2,9 @@ package com.tienda.alal.controller;
 
 import java.util.Map;
 
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,6 +45,17 @@ public class FilesController {
     public ResponseEntity<Map<String, Object>> fileExists(@PathVariable Long fileId) {
         boolean exists = fileService.fileExists(fileId);
         return ResponseEntity.ok(Map.of("status", 200, "data", Map.of("exists", exists)));
+    }
+
+    @GetMapping("/{fileId}/download")
+    public ResponseEntity<Resource> downloadFile(@PathVariable Long fileId) {
+        FileMetadataResponse metadata = fileService.getFileMetadata(fileId);
+        Resource resource = fileService.getFileResource(fileId);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + metadata.getOriginalName() + "\"")
+                .contentType(MediaType.parseMediaType(metadata.getMimeType()))
+                .contentLength(metadata.getSize())
+                .body(resource);
     }
 
     @DeleteMapping("/{fileId}")

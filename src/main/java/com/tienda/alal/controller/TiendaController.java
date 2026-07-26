@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.tienda.alal.model.ApiResponse;
 import com.tienda.alal.service.TiendaService;
 
 @RestController
@@ -22,8 +21,8 @@ public class TiendaController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse> insertar(@RequestBody Map<String, Object> req) {
+    public ResponseEntity<Map<String, Object>> insertar(@RequestBody Map<String, Object> req) {
         String resultado = service.insertarTienda(req);
-        return ResponseEntity.ok(new ApiResponse(200, resultado));
+        return ResponseEntity.ok(Map.of("status", 200, "mensaje", resultado));
     }
 }

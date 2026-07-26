@@ -1,5 +1,6 @@
 package com.tienda.alal.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class GenericController {
 
     @PostMapping
     public ResponseEntity<Map<String, Object>> ejecutar(@RequestBody GenericRequest req) {
-        Map<String, Object> result = service.ejecutarSP(req.getSp_id(), req.getParams());
+        List<Map<String, Object>> result = service.ejecutarSP(req.getSp_id(), req.getParams());
         return ResponseEntity.ok(Map.of("status", 200, "data", result));
     }
 }

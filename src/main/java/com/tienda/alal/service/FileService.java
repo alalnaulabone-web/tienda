@@ -2,6 +2,7 @@ package com.tienda.alal.service;
 
 import java.time.LocalDateTime;
 
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -78,6 +79,12 @@ public class FileService {
 
         storageService.deleteFile(file.getInternalName());
         fileRepository.deleteById(fileId);
+    }
+
+    public Resource getFileResource(Long fileId) {
+        FileEntity file = fileRepository.findById(fileId)
+                .orElseThrow(() -> new FileNotFoundException("Archivo no encontrado con ID: " + fileId));
+        return storageService.loadFile(file.getInternalName());
     }
 
     public boolean fileExists(Long fileId) {

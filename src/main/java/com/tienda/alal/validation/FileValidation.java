@@ -33,7 +33,7 @@ public class FileValidation {
             "txt", "csv"
     ));
 
-    private static final String DANGEROUS_PATTERN = "^[a-zA-Z0-9._-]+$";
+    private static final Pattern SAFE_FILENAME_PATTERN = Pattern.compile("^[a-zA-Z0-9._-]+$");
 
     /**
      * Valida que el archivo no sea nulo y no esté vacío
@@ -97,7 +97,7 @@ public class FileValidation {
 
         // Validar caracteres permitidos
         String fileName = originalName.substring(0, originalName.lastIndexOf("."));
-        if (!Pattern.matches(DANGEROUS_PATTERN, fileName)) {
+        if (!SAFE_FILENAME_PATTERN.matcher(fileName).matches()) {
             throw new FileUploadException("Nombre de archivo contiene caracteres no permitidos");
         }
     }

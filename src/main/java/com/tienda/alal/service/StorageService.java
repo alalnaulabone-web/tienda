@@ -4,13 +4,15 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.tienda.alal.exception.FileNotFoundException;
 import com.tienda.alal.exception.FileUploadException;
 
 @Service
@@ -45,7 +47,7 @@ public class StorageService {
             }
 
             // Guardar archivo
-            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(file.getInputStream(), filePath);
 
             // Retornar nombre interno (sin ruta absoluta)
             return internalName;
@@ -95,9 +97,15 @@ public class StorageService {
         }
     }
 
-    /**
-     * Obtiene la ruta completa de almacenamiento de un archivo
-     */
+    public Resource loadFile(String internalName) {
+        Path filePath = Paths.get(uploadDir).resolve(internalName);
+        Resource resource = new FileSystemResource(filePath);
+        if (!resource.exists()) {
+            throw new FileNotFoundException("Archivo no encontrado en el sistema de archivos");
+        }
+        return resource;
+    }
+
     public String getStoragePath(String internalName) {
         return Paths.get(uploadDir).resolve(internalName).toString();
     }

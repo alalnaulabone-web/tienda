@@ -1,10 +1,12 @@
 package com.tienda.alal.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import com.tienda.alal.exception.SpExecutionException;
 import com.tienda.alal.exception.SpValidationException;
 
 @Service
@@ -21,7 +23,16 @@ public class TiendaService {
             throw new SpValidationException("El body del request está vacío");
         }
 
-        Map<String, Object> result = genericService.ejecutarSP(1, new HashMap<>(req));
-        return result.get("resultado").toString();
+        List<Map<String, Object>> rows = genericService.ejecutarSP(1, new HashMap<>(req));
+        if (rows.isEmpty()) {
+            throw new SpExecutionException("El stored procedure no retornó resultados");
+        }
+
+        Object resultadoObj = rows.get(0).get("resultado");
+        if (resultadoObj == null) {
+            throw new SpExecutionException("El stored procedure no retornó el campo 'resultado'");
+        }
+
+        return resultadoObj.toString();
     }
 }

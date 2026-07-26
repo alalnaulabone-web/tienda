@@ -21,7 +21,7 @@ curl -X POST http://localhost:8080/tienda \
   -d '{
     "nombre": "Mi Tienda",
     "codigo": "T001",
-    "logo": "logo.png",
+    "id_logo": "logo.png",
     "propietario": "Juan Pérez",
     "cedula": "123456789",
     "ubicacion": "Centro",
@@ -83,7 +83,7 @@ INSERT INTO sp_validations (sp_id, parametro, tipo_validacion, valor_validacion)
   {
     "nombre": "string (obligatorio)",
     "codigo": "string (opcional)",
-    "logo": "string (opcional)",
+    "id_logo": "string (opcional)",
     "propietario": "string (obligatorio, sin números)",
     "cedula": "string (obligatorio, solo números)",
     "ubicacion": "string (obligatorio)",
@@ -163,7 +163,7 @@ DELIMITER //
 CREATE PROCEDURE sp_insertar_tienda(
     IN p_nombre VARCHAR(255),
     IN p_codigo VARCHAR(50),
-    IN p_logo VARCHAR(255),
+    IN p_id_logo VARCHAR(255),
     IN p_propietario VARCHAR(255),
     IN p_cedula VARCHAR(20),
     IN p_ubicacion VARCHAR(255),
@@ -171,8 +171,8 @@ CREATE PROCEDURE sp_insertar_tienda(
 )
 BEGIN
     -- Tu lógica para insertar tienda aquí
-    INSERT INTO tiendas (nombre, codigo, logo, propietario, cedula, ubicacion, comentario, fecha_creacion)
-    VALUES (p_nombre, p_codigo, p_logo, p_propietario, p_cedula, p_ubicacion, p_comentario, NOW());
+    INSERT INTO tiendas (nombre, codigo, id_logo, propietario, cedula, ubicacion, comentario, fecha_creacion)
+    VALUES (p_nombre, p_codigo, p_id_logo, p_propietario, p_cedula, p_ubicacion, p_comentario, NOW());
 END //
 DELIMITER ;
 ```
@@ -244,8 +244,7 @@ src/
 │   │   │   ├── TestController.java       # Endpoint de prueba
 │   │   │   └── TiendaController.java     # Endpoint de tienda (con HTTP profesional)
 │   │   ├── model/
-│   │   │   ├── ApiResponse.java          # ✅ NUEVO: Respuesta HTTP estandarizada
-│   │   │   └── TiendaRequest.java        # DTO de entrada
+│   │   │   └── ApiResponse.java          # ✅ NUEVO: Respuesta HTTP estandarizada
 │   │   └── service/
 │   │       └── TiendaService.java        # ✅ MEJORADO: Validaciones y manejo de errores
 │   └── resources/
